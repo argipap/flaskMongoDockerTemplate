@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+
+    server:
+      image: server
+      build:
+        context: ./services/server
+        dockerfile: Dockerfile
+      volumes:
+        - './services/server:/usr/src/app'
+      ports:
+        - 5001:5000
+      environment:
+        - FLASK_ENV=development
+        - APP_SETTINGS=project.config.DevelopmentConfig
+        - SECRET_KEY=my_precious
+        - MONGOALCHEMY_DATABASE=test_dev
+        - MONGOALCHEMY_DATABASE_TEST=test_test
+        - MONGOALCHEMY_SERVER=mongo-db
+        - MONGOALCHEMY_PORT=27017
+      depends_on:
+        - mongo-db
+  
+    mongo-db:
+      image: 'mongo:latest'
+      ports:
+        - 27017:27017
